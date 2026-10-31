@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Volt Shop</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- CABEÇALHO -->
+  <header class="topo">
+    <div class="container topo__in">
+
+      <h1 class="logo">Volt<span>Shop</span></h1>
+
+      <form class="busca" role="search" onsubmit="return false">
+        <label for="busca" class="sr-only">
+          Buscar produto
+        </label>
+
+        <input
+          id="busca"
+          type="search"
+          placeholder="Buscar produto..."
+        >
+      </form>
+
+      <button
+        id="btn-tema"
+        class="btn btn-sec"
+        type="button"
+        aria-label="Alternar tema"
+      >
+        Escuro
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="container">
+
+    <!-- CARDÁPIO E CARRINHO -->
+    <div class="layout">
+
+      <!-- PRODUTOS -->
+      <section id="cardapio" aria-labelledby="t-cardapio">
+
+        <div class="secao-topo">
+          <h2 id="t-cardapio">
+            Produtos
+          </h2>
+
+          <button
+            id="novo"
+            class="btn"
+            type="button"
+          >
+            + Novo produto
+          </button>
+        </div>
+
+        <!-- O JavaScript insere os produtos aqui -->
+        <div id="lista" class="grade"></div>
+
+      </section>
+
+
+      <!-- CARRINHO -->
+      <aside
+        id="carrinho"
+        class="carrinho"
+        aria-labelledby="t-carrinho"
+      >
+
+        <h2 id="t-carrinho">
+          Seu pedido (<span id="contador">0</span>)
+        </h2>
+
+        <ul id="itens" class="itens"></ul>
+
+
+      <h2 id="t-carrinho">
+        Seu pedido (<span id="contador">0</span>)
+      </h2>
+
+        <ul id="itens" class="itens"></ul>
+
+
+        <!-- TIPO DE ENTREGA -->
+        <fieldset>
+          <legend>Tipo de entrega</legend>
+
+          <label>
+            <input
+              type="radio"
+              name="entrega"
+              value="retirada"
+              checked
+            >
+            Retirada / local
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="entrega"
+              value="delivery"
+            >
+            Delivery (+ R$ 2,50)
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Forma de pagamento</legend>
+
+          <label>
+            <input
+              type="radio"
+              name="pagamento"
+              value="qr-code"
+              checked
+            >
+            QR Code
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="pagamento"
+              value="dinheiro"
+            >
+            Dinheiro
+          </label>
+
+        </fieldset>
+
+
+        <!-- DADOS DO CLIENTE -->
+        <div class="dados-cliente">
+
+          <label for="cli-nome">
+            Nome do cliente
+          </label>
+
+          <input
+            id="cli-nome"
+            type="text"
+            autocomplete="name"
+          >
+
+          <div id="bloco-end" hidden>
+            <label for="cli-end">
+              Endereço de entrega
+            </label>
+
+            <input
+              id="cli-end"
+              type="text"
+              autocomplete="street-address"
+            >
+          </div>
+
+        </div>
+
+
+        <!-- RESUMO DO PEDIDO -->
+        <dl class="resumo">
+
+          <div>
+            <dt>Subtotal</dt>
+            <dd id="r-sub">R$ 0,00</dd>
+          </div>
+
+          <div>
+            <dt>Taxa de entrega</dt>
+            <dd id="r-taxa">R$ 0,00</dd>
+          </div>
+
+          <div class="total">
+            <dt>Total</dt>
+            <dd id="r-total">R$ 0,00</dd>
+          </div>
+
+        </dl>
+
+
+        <!-- AÇÕES DO CARRINHO -->
+        <div class="acoes">
+
+          <button
+            id="limpar"
+            class="btn btn-sec"
+            type="button"
+          >
+            Limpar
+          </button>
+
+          <button
+            id="finalizar"
+            class="btn"
+            type="button"
+          >
+            Finalizar pedido
+          </button>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+
+    <!-- HISTÓRICO DE PEDIDOS -->
+    <section
+      id="pedidos"
+      aria-labelledby="t-pedidos"
+    >
+
+      <h2 id="t-pedidos">Pedidos realizados</h2>
+
+      <ul id="lista-pedidos" class="pedidos"></ul>
+
+    </section>
+
+  </main>
+
+
+  <!-- MODAL DE CADASTRO E EDIÇÃO DE PRODUTOS -->
+  <dialog id="dlg" aria-labelledby="t-form">
+
+    <form id="form-produto" novalidate>
+
+      <h2 id="t-form">Novo produto</h2>
+
+      <input type="hidden" id="p-id">
+
+
+      <label for="p-nome">Nome</label>
+      <input
+        id="p-nome"
+        type="text"
+        required
+      >
+
+
+      <label for="p-desc">Descrição</label>
+      <input
+        id="p-desc"
+        type="text"
+      >
+
+
+      <label for="p-preco">Preço (R$)</label>
+      <input
+        id="p-preco"
+        type="text"
+        inputmode="decimal"
+        placeholder="0,00"
+        required
+      >
+
+
+      <label for="p-cat">Categoria</label>
+      <select id="p-cat">
+        <option value="Eletrônico">Eletrônicos</option>
+        <option value="Celular">Celular</option>
+        <option value="Notebook">Notebook</option>
+        <option value="Utilidades">Utilidades</option>
+      </select>
+
+
+      <label for="p-img">URL da imagem (opcional)</label>
+      <input
+        id="p-img"
+        type="url"
+        placeholder="https://..."
+      >
+
+
+      <p
+        id="erro-form"
+        class="erro"
+        role="alert"
+      ></p>
+
+
+      <div class="acoes">
+
+        <button
+          type="button"
+          id="cancelar"
+          class="btn btn-sec"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn"
+        >
+          Salvar
+        </button>
+
+      </div>
+
+    </form>
+
+  </dialog>
+
+    <!-- MODAL DE PAGAMENTO -->
+  <dialog id="dlg-pagamento">
+    <h2>Pagamento via QR Code</h2>
+
+    <p>Escaneie o código para simular seu pagamento.</p>
+
+    <div id="qrcode"></div>
+
+    <p id="valor-pagamento"></p>
+
+    <p>Este QR Code é fictício e não realiza transações financeiras.</p>
+
+    <div class="acoes">
+      <button id="fechar-pagamento" class="btn btn-sec" type="button">
+        Cancelar
+      </button>
+
+      <button id="confirmar-pagamento" class="btn" type="button">
+        Confirmar pagamento
+      </button>
+    </div>
+  </dialog>
+
+  <!-- RODAPÉ -->
+  <footer class="rodape">
+    <div class="container">
+      <p>© 2026 Volt Shop · Projeto didático</p>
+    </div>
+  </footer>
+
+
+  <!-- NOTIFICAÇÕES -->
+  <div
+    id="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+<!-- Biblioteca para geração do QR Code -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- JavaScript do projeto -->
+<script src="script.js"></script>
+
+</body>
+</html>
